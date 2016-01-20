@@ -1,5 +1,6 @@
 package com.clivekumara.amanabank;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -64,12 +65,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         switch (v.getId()){
             case R.id.btlogin:
 
-                Branch b = new Branch(001,"Main branch",6.725,80.064668,"480, Galle Road,Colombo 3","0342263877","0718256773");
-                dBhelper.addBranch(b);
+                //Branch b = new Branch(001,"Main branch",6.725,80.064668,"480, Galle Road,Colombo 3","0342263877","0718256773");
+                //dBhelper.addBranch(b);
 
 
-                //Intent i = new Intent(getApplicationContext(),bankLocatorMap.class);
-                //startActivity(i);
+                Intent i = new Intent(getApplicationContext(),bankLocatorMap.class);
+                startActivity(i);
                 break;
         }
     }

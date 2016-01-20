@@ -2,8 +2,12 @@ package com.clivekumara.amanabank;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by chathuranga on 1/21/2016.
@@ -81,6 +85,35 @@ public class DBhelper  extends SQLiteOpenHelper{
         // Inserting Row
         db.insert(TABLE_BRANCH, null, values);
         db.close(); // Closing database connection
+    }
+
+    public List<Branch> getAllBranches() {
+        List<Branch> contactList = new ArrayList<Branch>();
+        // Select All Query
+        String selectQuery = "SELECT  * FROM " + TABLE_BRANCH;
+
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery(selectQuery, null);
+
+        // looping through all rows and adding to list
+        if (cursor.moveToFirst()) {
+            do {
+                Branch branch = new Branch();
+                branch.setBranchCode(cursor.getInt(0));
+                branch.setBranchName(cursor.getString(1));
+                branch.setLatitude(cursor.getDouble(2));
+                branch.setLongitude(cursor.getDouble(3));
+                branch.setAddress(cursor.getString(4));
+                branch.setAddress(cursor.getString(5));
+                branch.setAddress(cursor.getString(6));
+
+                // Adding contact to list
+                contactList.add(branch);
+            } while (cursor.moveToNext());
+        }
+
+        // return contact list
+        return contactList;
     }
 
 

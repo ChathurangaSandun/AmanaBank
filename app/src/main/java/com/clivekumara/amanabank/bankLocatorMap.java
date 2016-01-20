@@ -5,6 +5,7 @@ import android.location.Location;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
+import android.util.Log;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -15,11 +16,15 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import java.util.List;
+
 public class bankLocatorMap extends FragmentActivity implements OnMapReadyCallback {
 
     private GoogleMap mMap;
     double myLocationLat, myLocationLong;
     Marker myMarker;
+    DBhelper dBhelper;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,6 +34,9 @@ public class bankLocatorMap extends FragmentActivity implements OnMapReadyCallba
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
+
+
+        dBhelper = new DBhelper(this);
     }
 
 
@@ -48,6 +56,7 @@ public class bankLocatorMap extends FragmentActivity implements OnMapReadyCallba
 
         mMap.setMyLocationEnabled(true);
         mMap.setOnMyLocationChangeListener(myLocationChangeListener);
+        getLocations();
 
     }
 
@@ -71,9 +80,21 @@ public class bankLocatorMap extends FragmentActivity implements OnMapReadyCallba
                                     + location.getLongitude())
                     .icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_man))
                     .title("My Locaiton"));
-            if(mMap != null){
+            /*if(mMap != null){
                 mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(loc, 16.0f));
-            }
+            }*/
         }
     };
+
+
+    private void getLocations(){
+        List<Branch> allBranches = dBhelper.getAllBranches();
+
+        for (Branch b: allBranches){
+            Log.d("Clivekumara", b.getBranchName());
+
+            mMap.addMarker(new MarkerOptions().position(new LatLng(b.getLatitude(),b.getLongitude())).title(b.getBranchName() + "\n" + b.getAddress()).icon(BitmapDescriptorFactory.fromResource(R.drawable.bank)));
+        }
+
+    }
 }
