@@ -65,8 +65,21 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         switch (v.getId()){
             case R.id.btlogin:
 
-                //Branch b = new Branch(001,"Main branch",6.725,80.064668,"480, Galle Road,Colombo 3","0342263877","0718256773");
-                //dBhelper.addBranch(b);
+                dBhelper.truncate();
+
+                Branch b = new Branch(001,"Main branch",6.905825,79.851470,"480, Galle Road,Colombo 3","011-7756000","011-4718148");
+                dBhelper.addBranch(b);
+                b = new Branch(002,"Pettah",6.937672,79.851277,"129, Main Street, Colombo 11","011-7756000","011-4718148");
+                dBhelper.addBranch(b);
+                 b = new Branch(003,"Kandy",7.2955357,80.6355777,"480, Galle Road,Colombo 3","011-7756000","011-4718148");
+                dBhelper.addBranch(b);
+                 b = new Branch(004,"Kattankudy",7.6836273,81.7246413,"480, Galle Road,Colombo 3","011-7756000","011-4718148");
+                dBhelper.addBranch(b);
+                 b = new Branch(005,"Dehiwala",6.8618673,79.8615613,"28, Galle Road,Dehiwala","011-7756000","011-4718148");
+                dBhelper.addBranch(b);
+
+
+
 
 
                 Intent i = new Intent(getApplicationContext(),bankLocatorMap.class);

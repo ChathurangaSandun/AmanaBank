@@ -48,12 +48,14 @@ public class DBhelper  extends SQLiteOpenHelper{
 
     public DBhelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
+
     }
 
 
     @Override
     public void onCreate(SQLiteDatabase db) {
         db.execSQL(CREATE_BRANCH_TABLE);
+
     }
 
     @Override
@@ -69,7 +71,7 @@ public class DBhelper  extends SQLiteOpenHelper{
 
     public void addBranch(Branch branch) {
         SQLiteDatabase db = this.getReadableDatabase();
-        db.execSQL("DELETE FROM " + TABLE_BRANCH);
+
 
 
         ContentValues values = new ContentValues();
@@ -117,4 +119,9 @@ public class DBhelper  extends SQLiteOpenHelper{
     }
 
 
+    public void truncate() {
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        db.execSQL("DELETE FROM " + TABLE_BRANCH);
+    }
 }

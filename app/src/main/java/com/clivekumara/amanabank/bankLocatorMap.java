@@ -58,6 +58,9 @@ public class bankLocatorMap extends FragmentActivity implements OnMapReadyCallba
         mMap.setOnMyLocationChangeListener(myLocationChangeListener);
         getLocations();
 
+
+
+
     }
 
     private GoogleMap.OnMyLocationChangeListener myLocationChangeListener = new GoogleMap.OnMyLocationChangeListener() {
@@ -83,18 +86,70 @@ public class bankLocatorMap extends FragmentActivity implements OnMapReadyCallba
             /*if(mMap != null){
                 mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(loc, 16.0f));
             }*/
+
+            getNearestBranch();
+
         }
     };
 
 
     private void getLocations(){
+
+
+
         List<Branch> allBranches = dBhelper.getAllBranches();
 
         for (Branch b: allBranches){
             Log.d("Clivekumara", b.getBranchName());
 
-            mMap.addMarker(new MarkerOptions().position(new LatLng(b.getLatitude(),b.getLongitude())).title(b.getBranchName() + "\n" + b.getAddress()).icon(BitmapDescriptorFactory.fromResource(R.drawable.bank)));
+            mMap.addMarker(new MarkerOptions().position(new LatLng(b.getLatitude(), b.getLongitude())).title(b.getBranchName()).icon(BitmapDescriptorFactory.fromResource(R.drawable.bank)));
+
+
+
         }
 
+
     }
+
+
+    private void getNearestBranch(){
+        double mindistance = 1000000000;
+        int branchCode = -1;
+
+        List<Branch> allBranches = dBhelper.getAllBranches();
+
+        for (Branch b: allBranches){
+            Log.d("Clivekumara", b.getBranchName());
+
+
+
+            double v = distanceFrom(myLocationLat, myLocationLong, b.getLatitude(), b.getLongitude());
+            Log.d("min dis",String.valueOf(myLocationLat));
+
+            if(mindistance>v){
+                mindistance =v;
+                branchCode = b.getBranchCode();
+            }
+
+        }
+        Log.d("min dis",String.valueOf(mindistance));
+        Log.d("min dis",String.valueOf(branchCode));
+
+    }
+
+
+
+    public double distanceFrom(double lat1, double lng1, double lat2, double lng2) {
+        double earthRadius = 3958.75;
+        double dLat = Math.toRadians(lat2-lat1);
+        double dLng = Math.toRadians(lng2 - lng1);
+        double a = Math.sin(dLat/2) * Math.sin(dLat/2) + Math.cos(Math.toRadians(lat1)) * Math.cos(Math.toRadians(lat2)) * Math.sin(dLng/2) * Math.sin(dLng/2);
+        double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+        double dist = earthRadius * c;
+        int meterConversion = 1609;
+        return new Double(dist * meterConversion).floatValue();    // this will return distance
+    }
+
+
+
 }
